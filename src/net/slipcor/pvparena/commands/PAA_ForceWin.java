@@ -16,7 +16,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
-import java.util.Map;
 
 public class PAA_ForceWin extends AbstractArenaCommand {
 
