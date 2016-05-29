@@ -833,10 +833,6 @@ public class PlayerListener implements Listener {
         event.setCancelled(false); // fighting player - first recon NOT to
         // cancel!
 
-        if (player.getGameMode() == GameMode.SPECTATOR && event.getCause() != PlayerTeleportEvent.TeleportCause.ENDER_PEARL) {
-            return; // ignore spectators
-        }
-
         arena.getDebugger().i("aimed location: " + event.getTo(), player);
 
 
