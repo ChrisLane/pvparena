@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.*;
 import org.bukkit.material.Dye;
 import org.bukkit.material.Wool;
-import org.bukkit.potion.PotionData;
+//import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
@@ -394,8 +394,8 @@ public final class StringParser {
 
                         final String[] defs = data.split(SAFE_BREAK);
 
-                        defs: for (final String def : defs) {
-                            if (def.contains("X")) {
+                        for (final String def : defs) {
+/*                            if (def.contains("X")) {
                                 String[] vals = def.split("X");
                                 for (PotionType type : PotionType.values()) {
                                     if (type == null || type.getEffectType() == null) {
@@ -408,7 +408,7 @@ public final class StringParser {
                                     }
                                 }
                                 PVPArena.instance.getLogger().warning("Invalid base potion data: "+def);
-                            }
+                            }*/
                             final String[] vals = def.split("x");
                             potionMeta.addCustomEffect(
                                     new PotionEffect(
@@ -470,7 +470,7 @@ public final class StringParser {
     }
 
     private static boolean hasPotionMeta(Material mat) {
-        return mat == Material.POTION || mat == Material.SPLASH_POTION || mat == Material.LINGERING_POTION || mat == Material.TIPPED_ARROW;
+        return mat == Material.POTION/* || mat == Material.SPLASH_POTION || mat == Material.LINGERING_POTION || mat == Material.TIPPED_ARROW*/;
     }
 
     public static ItemStack[] getItemStacksFromString(final String string) {
@@ -593,13 +593,13 @@ public final class StringParser {
             }
             final PotionMeta potionMeta = (PotionMeta) itemStack.getItemMeta();
             temp.append('~');
-            PotionData pData = potionMeta.getBasePotionData();
+/*            PotionData pData = potionMeta.getBasePotionData();
             try {
                 temp.append(pData.getType().getEffectType().getName()).append('X').append(pData.isExtended()).append('X').append(pData.isUpgraded());
                 temp.append(SAFE_BREAK);
             } catch (Exception e) {
                 PVPArena.instance.getLogger().warning("Invalid Potion data - please update your Potion definitions!");
-            }
+            }*/
             for (final PotionEffect pe : potionMeta.getCustomEffects()) {
                 temp.append(pe.getType().getName()).append('x').append(pe.getAmplifier()).append('x').append(pe.getDuration());
                 temp.append(SAFE_BREAK);

@@ -42,7 +42,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.player.*;
-import org.bukkit.inventory.EquipmentSlot;
+//import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.plugin.IllegalPluginAccessException;
 
 import java.util.*;
@@ -554,7 +554,7 @@ public class PlayerListener implements Listener {
                     + '?', player);
             if (block.getTypeId() == mMat.getId()) {
                 arena.getDebugger().i("clicked ready block!", player);
-                if (event.getHand() == EquipmentSlot.OFF_HAND) {
+                if (event.getItem() == null) {
                     arena.getDebugger().i("out: offhand!", player);
                     return; // double event
                 }

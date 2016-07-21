@@ -216,7 +216,7 @@ public final class ArenaClass {
                 debug.i("- " + StringParser.getStringFromItemStack(item), player);
             }
         }
-        player.getInventory().setItemInOffHand(offHand);
+        //player.getInventory().setItemInOffHand(offHand);
         player.updateInventory();
     }
 

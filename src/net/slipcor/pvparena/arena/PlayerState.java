@@ -65,7 +65,7 @@ public final class PlayerState {
         potionEffects = player.getActivePotionEffects();
 
         flying = player.isFlying();
-        collides = player.isCollidable();
+        //collides = player.isCollidable();
 
         final ArenaPlayer aPlayer = ArenaPlayer.parsePlayer(player.getName());
         final Arena arena = aPlayer.getArena();
@@ -126,7 +126,7 @@ public final class PlayerState {
         if (arena.getArenaConfig().getInt(CFG.GENERAL_GAMEMODE) > -1) {
             player.setGameMode(GameMode.getByValue(arena.getArenaConfig().getInt(CFG.GENERAL_GAMEMODE)));
         }
-        player.setCollidable(arena.getArenaConfig().getBoolean(CFG.PLAYER_COLLISION));
+        //player.setCollidable(arena.getArenaConfig().getBoolean(CFG.PLAYER_COLLISION));
         PlayerState.removeEffects(player);
 
         if (arena.getArenaConfig().getBoolean(CFG.CHAT_COLORNICK)) {
@@ -210,7 +210,7 @@ public final class PlayerState {
             player.setAllowFlight(true);
         }
         player.setFlying(flying);
-        player.setCollidable(collides);
+        //player.setCollidable(collides);
     }
 
     /**
