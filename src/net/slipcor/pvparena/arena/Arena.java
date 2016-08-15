@@ -1588,14 +1588,18 @@ public class Arena {
 
             player.setScoreboard(board);
             for (final Team sTeam : board.getTeams()) {
-                if (sTeam.getName().equals(team.getName())) {
-                    sTeam.addPlayer(player);
-                    return;
+                if (team != null) {
+                    if (sTeam.getName().equals(team.getName())) {
+                        sTeam.addPlayer(player);
+                        return;
+                    }
                 }
             }
-            final Team sTeam = board.registerNewTeam(team.getName());
-            sTeam.setPrefix(team.getColor().toString());
-            sTeam.addPlayer(player);
+            if (team != null) {
+                final Team sTeam = board.registerNewTeam(team.getName());
+                sTeam.setPrefix(team.getColor().toString());
+                sTeam.addPlayer(player);
+            }
         }
     }
 
