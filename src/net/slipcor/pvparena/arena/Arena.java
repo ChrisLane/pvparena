@@ -508,11 +508,11 @@ public class Arena {
                 try {
                     scoreboard.registerNewTeam(team.getName());
                     final Team bukkitTeam = scoreboard.getTeam(team.getName());
-                    if (!getArenaConfig().getBoolean(CFG.PLAYER_COLLISION)) {
+                    /*if (!getArenaConfig().getBoolean(CFG.PLAYER_COLLISION)) {
                         bukkitTeam.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
-                    }
+                    }*/
                     bukkitTeam.setPrefix(team.getColor().toString());
-                    bukkitTeam.addEntry(team.getName());
+                    //bukkitTeam.addEntry(team.getName());
                     bukkitTeam.setAllowFriendlyFire(getArenaConfig().getBoolean(CFG.PERMS_TEAMKILL));
 
                     bukkitTeam.setCanSeeFriendlyInvisibles(
@@ -543,9 +543,9 @@ public class Arena {
             for (final ArenaTeam team : getTeams()) {
                 final Team sTeam = scoreboard.registerNewTeam(team.getName());
                 sTeam.setPrefix(team.getColor().toString());
-                if (!getArenaConfig().getBoolean(CFG.PLAYER_COLLISION)) {
+                /*if (!getArenaConfig().getBoolean(CFG.PLAYER_COLLISION)) {
                     sTeam.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
-                }
+                }*/
                 for (final ArenaPlayer aPlayer : team.getTeamMembers()) {
                     sTeam.addPlayer(aPlayer.get());
                 }
@@ -1292,9 +1292,9 @@ public class Arena {
                                 arena.getDebugger().i("- >"+entry);
                             }
                         }*/
-                            if (ap.getBackupScoreboardTeam() != null) {
+                            /*if (ap.getBackupScoreboardTeam() != null) {
                                 ap.getBackupScoreboardTeam().addEntry(ap.getName());
-                            }
+                            }*/
                             ap.setBackupScoreboardTeam(null);
                             ap.setBackupScoreboard(null);
                         }
@@ -1328,9 +1328,9 @@ public class Arena {
 
                         if (ap.hasBackupScoreboard()) {
                             player.setScoreboard(ap.getBackupScoreboard());
-                            if (ap.getBackupScoreboardTeam() != null) {
+                            /*if (ap.getBackupScoreboardTeam() != null) {
                                 ap.getBackupScoreboardTeam().addEntry(ap.getName());
-                            }
+                            }*/
                             ap.setBackupScoreboardTeam(null);
                             ap.setBackupScoreboard(null);
                         }
@@ -1535,7 +1535,7 @@ public class Arena {
             getDebugger().i("ScoreBoards: Initiating scoreboard for player " + player.getName());
             if (!ap.hasBackupScoreboard() && player.getScoreboard() != null) {
                 ap.setBackupScoreboard(player.getScoreboard());
-                ap.setBackupScoreboardTeam(player.getScoreboard().getEntryTeam(ap.getName()));
+                ap.setBackupScoreboardTeam(player.getScoreboard().getTeam(ap.getName()));
             } else if (ap.hasBackupScoreboard()) {
                 getDebugger().i("ScoreBoards: has backup: " + ap.hasBackupScoreboard());
                 getDebugger().i("ScoreBoards: player.getScoreboard == null: " + (player.getScoreboard() == null));
@@ -1554,7 +1554,7 @@ public class Arena {
                     for (final ArenaTeam team : getTeams()) {
 
                         if (team == ArenaPlayer.parsePlayer(player.getName()).getArenaTeam()) {
-                            board.getTeam(team.getName()).addEntry(player.getName());
+                            board.getTeam(team.getName()).addPlayer(player);
                             updateScoreboard(player);
                             return;
                         }
@@ -1564,7 +1564,7 @@ public class Arena {
                         scoreboard.registerNewTeam(team.getName());
                         final Team bukkitTeam = scoreboard.getTeam(team.getName());
                         bukkitTeam.setPrefix(team.getColor().toString());
-                        bukkitTeam.addEntry(team.getName());
+                        //bukkitTeam.addEntry(team.getName());
                         bukkitTeam.setAllowFriendlyFire(getArenaConfig().getBoolean(CFG.PERMS_TEAMKILL));
 
                         bukkitTeam.setCanSeeFriendlyInvisibles(
@@ -1583,19 +1583,19 @@ public class Arena {
             final ArenaTeam team = ap.getArenaTeam();
             if (!ap.hasBackupScoreboard() && player.getScoreboard() != null) {
                 ap.setBackupScoreboard(player.getScoreboard());
-                ap.setBackupScoreboardTeam(player.getScoreboard().getEntryTeam(ap.getName()));
+                ap.setBackupScoreboardTeam(player.getScoreboard().getTeam(ap.getName()));
             }
 
             player.setScoreboard(board);
             for (final Team sTeam : board.getTeams()) {
                 if (sTeam.getName().equals(team.getName())) {
-                    sTeam.addEntry(player.getName());
+                    sTeam.addPlayer(player);
                     return;
                 }
             }
             final Team sTeam = board.registerNewTeam(team.getName());
             sTeam.setPrefix(team.getColor().toString());
-            sTeam.addEntry(player.getName());
+            sTeam.addPlayer(player);
         }
     }
 
@@ -2350,17 +2350,17 @@ public class Arena {
             Bukkit.getScheduler().runTaskLater(PVPArena.instance, new RunLater(), 1L);
         } else {
             Scoreboard board = getStandardScoreboard();
-            board.getTeam(oldTeam.getName()).removeEntry(player.getName());
+            board.getTeam(oldTeam.getName()).removePlayer(player);
 
             for (final Team sTeam : board.getTeams()) {
                 if (sTeam.getName().equals(newTeam.getName())) {
-                    sTeam.addEntry(player.getName());
+                    sTeam.addPlayer(player);
                     return;
                 }
             }
             final Team sTeam = board.registerNewTeam(newTeam.getName());
             sTeam.setPrefix(newTeam.getColor().toString());
-            sTeam.addEntry(player.getName());
+            sTeam.addPlayer(player);
         }
     }
 
