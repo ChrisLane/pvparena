@@ -15,10 +15,7 @@ import net.slipcor.pvparena.loadables.ArenaRegion;
 import net.slipcor.pvparena.loadables.ArenaRegion.RegionType;
 import net.slipcor.pvparena.managers.*;
 import net.slipcor.pvparena.runnables.StartRunnable;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.command.CommandSender;
@@ -192,15 +189,15 @@ public class Arena {
             mTeam.setPrefix(prefix);
             mTeam.setSuffix(suffix);
 
-            for (String entry : scoreboard.getEntries()) {
+            for (OfflinePlayer entry : scoreboard.getPlayers()) {
                 if (scoreboard.getObjective("lives").getScore(entry).getScore() == value) {
-                    mTeam.removeEntry(entry);
+                    mTeam.removePlayer(entry);
                     scoreboard.getObjective("lives").getScore(string).setScore(0);
                     scoreboard.resetScores(entry);
                     break;
                 }
             }
-            mTeam.addEntry(string);
+            //mTeam.addPlayer(string);
             scoreboard.getObjective("lives").getScore(string).setScore(value);
         } catch (Exception e) {
             return false;
@@ -552,11 +549,11 @@ public class Arena {
                 try {
                     scoreboard.registerNewTeam(team.getName());
                     final Team bukkitTeam = scoreboard.getTeam(team.getName());
-                    if (!getArenaConfig().getBoolean(CFG.PLAYER_COLLISION)) {
+                    /*if (!getArenaConfig().getBoolean(CFG.PLAYER_COLLISION)) {
                         bukkitTeam.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
-                    }
+                    }*/
                     bukkitTeam.setPrefix(team.getColor().toString());
-                    bukkitTeam.addEntry(team.getName());
+                    //bukkitTeam.addEntry(team.getName());
                     bukkitTeam.setAllowFriendlyFire(getArenaConfig().getBoolean(CFG.PERMS_TEAMKILL));
 
                     bukkitTeam.setCanSeeFriendlyInvisibles(!isFreeForAll());
@@ -590,11 +587,11 @@ public class Arena {
                 final Team sTeam = scoreboard.registerNewTeam(team.getName());
                 sTeam.setPrefix(team.getColor().toString());
                 sTeam.setCanSeeFriendlyInvisibles(!isFreeForAll());
-                if (!getArenaConfig().getBoolean(CFG.PLAYER_COLLISION)) {
+                /*if (!getArenaConfig().getBoolean(CFG.PLAYER_COLLISION)) {
                     sTeam.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
-                }
+                }*/
                 for (final ArenaPlayer aPlayer : team.getTeamMembers()) {
-                    sTeam.addEntry(aPlayer.getName());
+                    sTeam.addPlayer(aPlayer.get());
                 }
             } /*
             for (Objective o : scoreboard.getObjectives()) {
@@ -1323,8 +1320,8 @@ public class Arena {
             try {
                 if (scoreboard != null) {
                     for (final Team team : scoreboard.getTeams()) {
-                        if (team.hasEntry(player.getName())) {
-                            team.removeEntry(player.getName());
+                        if (team.hasPlayer(player.getPlayer())) {
+                            team.removePlayer(player.getPlayer());
                             if (soft) {
                                 updateScoreboards();
                                 return;
@@ -1343,7 +1340,7 @@ public class Arena {
                         if (ap.hasBackupScoreboard()) {
                             player.setScoreboard(ap.getBackupScoreboard());
                             if (ap.getBackupScoreboardTeam() != null && !force) {
-                                ap.getBackupScoreboardTeam().addEntry(ap.getName());
+                                ap.getBackupScoreboardTeam().addPlayer(ap.get());
                             }
                             ap.setBackupScoreboardTeam(null);
                             ap.setBackupScoreboard(null);
@@ -1365,9 +1362,9 @@ public class Arena {
                 e.printStackTrace();
             }
         } else {
-            Team team = getStandardScoreboard().getEntryTeam(player.getName());
+            Team team = getStandardScoreboard().getTeam(player.getName());
             if (team != null) {
-                team.removeEntry(player.getName());
+                team.removePlayer(player.getPlayer());
                 if (soft) {
                     return;
                 }
@@ -1381,7 +1378,7 @@ public class Arena {
                         if (ap.hasBackupScoreboard()) {
                             player.setScoreboard(ap.getBackupScoreboard());
                             if (ap.getBackupScoreboardTeam() != null) {
-                                ap.getBackupScoreboardTeam().addEntry(ap.getName());
+                                ap.getBackupScoreboardTeam().addPlayer(ap.get());
                             }
                             ap.setBackupScoreboardTeam(null);
                             ap.setBackupScoreboard(null);
@@ -1501,11 +1498,11 @@ public class Arena {
                 return true;
             }
 
-            for (String entry : scoreboard.getEntries()) {
+            for (OfflinePlayer entry : scoreboard.getPlayers()) {
                 if (scoreboard.getObjective("lives").getScore(entry).getScore() == value) {
                     scoreboard.getObjective("lives").getScore(entry).setScore(0);
                     scoreboard.resetScores(entry);
-                    mTeam.removeEntry(entry);
+                    mTeam.removePlayer(entry);
                     return true;
                 }
             }
@@ -1619,7 +1616,7 @@ public class Arena {
             getDebugger().i("ScoreBoards: Initiating scoreboard for player " + player.getName());
             if (!ap.hasBackupScoreboard() && player.getScoreboard() != null) {
                 ap.setBackupScoreboard(player.getScoreboard());
-                ap.setBackupScoreboardTeam(player.getScoreboard().getEntryTeam(ap.getName()));
+                ap.setBackupScoreboardTeam(player.getScoreboard().getTeam(ap.getName()));
             } else if (ap.hasBackupScoreboard()) {
                 getDebugger().i("ScoreBoards: has backup: " + ap.hasBackupScoreboard());
                 getDebugger().i("ScoreBoards: player.getScoreboard == null: " + (player.getScoreboard() == null));
@@ -1638,7 +1635,7 @@ public class Arena {
                     for (final ArenaTeam team : getTeams()) {
 
                         if (team == ArenaPlayer.parsePlayer(player.getName()).getArenaTeam()) {
-                            board.getTeam(team.getName()).addEntry(player.getName());
+                            board.getTeam(team.getName()).addPlayer(player.getPlayer());
                             updateScoreboard(player);
                             return;
                         }
@@ -1648,7 +1645,7 @@ public class Arena {
                         scoreboard.registerNewTeam(team.getName());
                         final Team bukkitTeam = scoreboard.getTeam(team.getName());
                         bukkitTeam.setPrefix(team.getColor().toString());
-                        bukkitTeam.addEntry(team.getName());
+                        //bukkitTeam.addEntry(team.getName());
                         bukkitTeam.setAllowFriendlyFire(getArenaConfig().getBoolean(CFG.PERMS_TEAMKILL));
                         bukkitTeam.setCanSeeFriendlyInvisibles(!isFreeForAll());
                     } catch (final Exception e) {
@@ -1671,19 +1668,19 @@ public class Arena {
             final ArenaTeam team = ap.getArenaTeam();
             if (!ap.hasBackupScoreboard() && player.getScoreboard() != null) {
                 ap.setBackupScoreboard(player.getScoreboard());
-                ap.setBackupScoreboardTeam(player.getScoreboard().getEntryTeam(ap.getName()));
+                ap.setBackupScoreboardTeam(player.getScoreboard().getTeam(ap.getName()));
             }
 
             player.setScoreboard(board);
             for (final Team sTeam : board.getTeams()) {
                 if (sTeam.getName().equals(team.getName())) {
-                    sTeam.addEntry(player.getName());
+                    sTeam.addPlayer(player.getPlayer());
                     return;
                 }
             }
             final Team sTeam = board.registerNewTeam(team.getName());
             sTeam.setPrefix(team.getColor().toString());
-            sTeam.addEntry(player.getName());
+            sTeam.addPlayer(player.getPlayer());
             sTeam.setCanSeeFriendlyInvisibles(!isFreeForAll());
         }
     }
@@ -2438,17 +2435,17 @@ public class Arena {
 
                     final ArenaPlayer aPlayer = ArenaPlayer.parsePlayer(player.getName());
                     if (aPlayer.getArenaTeam() != null) {
-                        board.getTeam(oldTeam.getName()).removeEntry(player.getName());
+                        board.getTeam(oldTeam.getName()).removePlayer(player.getPlayer());
 
                         for (final Team sTeam : board.getTeams()) {
                             if (sTeam.getName().equals(newTeam.getName())) {
-                                sTeam.addEntry(player.getName());
+                                sTeam.addPlayer(player.getPlayer());
                                 return;
                             }
                         }
                         final Team sTeam = board.registerNewTeam(newTeam.getName());
                         sTeam.setPrefix(newTeam.getColor().toString());
-                        sTeam.addEntry(player.getName());
+                        sTeam.addPlayer(player.getPlayer());
                         sTeam.setCanSeeFriendlyInvisibles(!isFreeForAll());
                     }
                     updateScoreboard(player);
@@ -2458,18 +2455,18 @@ public class Arena {
             Bukkit.getScheduler().runTaskLater(PVPArena.instance, new RunLater(), 1L);
         } else {
             Scoreboard board = getStandardScoreboard();
-            board.getTeam(oldTeam.getName()).removeEntry(player.getName());
+            board.getTeam(oldTeam.getName()).removePlayer(player.getPlayer());
 
             for (final Team sTeam : board.getTeams()) {
                 if (sTeam.getName().equals(newTeam.getName())) {
-                    sTeam.addEntry(player.getName());
+                    sTeam.addPlayer(player.getPlayer());
                     return;
                 }
             }
             final Team sTeam = board.registerNewTeam(newTeam.getName());
             sTeam.setPrefix(newTeam.getColor().toString());
             sTeam.setCanSeeFriendlyInvisibles(!isFreeForAll());
-            sTeam.addEntry(player.getName());
+            sTeam.addPlayer(player.getPlayer());
         }
     }
 

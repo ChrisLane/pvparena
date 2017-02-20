@@ -5,12 +5,9 @@ import net.slipcor.pvparena.arena.Arena;
 import net.slipcor.pvparena.classes.PABlockLocation;
 import net.slipcor.pvparena.core.Config.CFG;
 import net.slipcor.pvparena.core.Debug;
-import net.slipcor.pvparena.core.Language;
-import net.slipcor.pvparena.core.Language.MSG;
 import net.slipcor.pvparena.loadables.ArenaModule;
 import net.slipcor.pvparena.loadables.ArenaRegion;
 import net.slipcor.pvparena.managers.ArenaManager;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -41,12 +38,12 @@ public class RegionTool extends ArenaModule {
 
     @Override
     public boolean onPlayerInteract(final PlayerInteractEvent event) {
-        if (event.getPlayer().getEquipment().getItemInMainHand() == null
-                || event.getPlayer().getEquipment().getItemInMainHand().getType() == Material.AIR) {
+        if (event.getPlayer().getEquipment().getItemInHand() == null
+                || event.getPlayer().getEquipment().getItemInHand().getType() == Material.AIR) {
             return false;
         }
 
-        if (event.getPlayer().getEquipment().getItemInMainHand().getType() == Material.AIR) {
+        if (event.getPlayer().getEquipment().getItemInHand().getType() == Material.AIR) {
             return false;
         }
 
@@ -60,7 +57,7 @@ public class RegionTool extends ArenaModule {
                 final Material mMat = Material.getMaterial(arena.getArenaConfig().getString(CFG.GENERAL_WAND));
                 arena.getDebugger().i("mMat now is " + mMat.name(), event.getPlayer());
 
-                if (event.getPlayer().getEquipment().getItemInMainHand().getType() == mMat) {
+                if (event.getPlayer().getEquipment().getItemInHand().getType() == mMat) {
                     PABlockLocation loc = new PABlockLocation(event.getPlayer().getLocation());
                     if (event.getClickedBlock() != null) {
                         loc = new PABlockLocation(event.getClickedBlock().getLocation());

@@ -63,7 +63,7 @@ public final class ArenaClass {
         CHESTPLATES_TYPE.add(Material.CHAINMAIL_CHESTPLATE);
         CHESTPLATES_TYPE.add(Material.IRON_CHESTPLATE);
         CHESTPLATES_TYPE.add(Material.DIAMOND_CHESTPLATE);
-        CHESTPLATES_TYPE.add(Material.ELYTRA);
+        //CHESTPLATES_TYPE.add(Material.ELYTRA);
 
         LEGGINGS_TYPE.add(Material.LEATHER_LEGGINGS);
         LEGGINGS_TYPE.add(Material.GOLD_LEGGINGS);
@@ -221,7 +221,7 @@ public final class ArenaClass {
                 debug.i("- " + StringParser.getStringFromItemStack(item), player);
             }
         }
-        player.getInventory().setItemInOffHand(offHand);
+        //player.getInventory().setItemInOffHand(offHand);
         player.updateInventory();
     }
 

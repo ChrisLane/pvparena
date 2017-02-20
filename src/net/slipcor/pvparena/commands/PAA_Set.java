@@ -167,7 +167,7 @@ public class PAA_Set extends AbstractArenaCommand {
             if ("hand".equals(value)) {
                 if (player instanceof Player) {
 
-                    String itemDefinition = StringParser.getStringFromItemStack(((Player) player).getEquipment().getItemInMainHand());
+                    String itemDefinition = StringParser.getStringFromItemStack(((Player) player).getEquipment().getItemInHand());
                     arena.getArenaConfig().setManually(node, itemDefinition);
                     arena.msg(
                             player,
@@ -200,7 +200,7 @@ public class PAA_Set extends AbstractArenaCommand {
             if ("hand".equals(value)) {
                 if (player instanceof Player) {
 
-                    String itemDefinition = StringParser.getStringFromItemStack(((Player) player).getEquipment().getItemInMainHand());
+                    String itemDefinition = StringParser.getStringFromItemStack(((Player) player).getEquipment().getItemInHand());
                     arena.getArenaConfig().setManually(node, itemDefinition);
                     arena.msg(
                             player,

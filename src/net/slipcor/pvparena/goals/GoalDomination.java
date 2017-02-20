@@ -1,16 +1,13 @@
 package net.slipcor.pvparena.goals;
 
-import javafx.geometry.Point3D;
 import net.slipcor.pvparena.PVPArena;
 import net.slipcor.pvparena.arena.Arena;
 import net.slipcor.pvparena.arena.ArenaClass;
 import net.slipcor.pvparena.arena.ArenaPlayer;
 import net.slipcor.pvparena.arena.ArenaPlayer.Status;
 import net.slipcor.pvparena.arena.ArenaTeam;
-import net.slipcor.pvparena.classes.PABlock;
 import net.slipcor.pvparena.classes.PABlockLocation;
 import net.slipcor.pvparena.classes.PACheck;
-import net.slipcor.pvparena.classes.PASpawn;
 import net.slipcor.pvparena.commands.PAA_Region;
 import net.slipcor.pvparena.core.Config.CFG;
 import net.slipcor.pvparena.core.Debug;
@@ -24,7 +21,10 @@ import net.slipcor.pvparena.managers.SpawnManager;
 import net.slipcor.pvparena.managers.TeamManager;
 import net.slipcor.pvparena.runnables.CircleParticleRunnable;
 import net.slipcor.pvparena.runnables.EndRunnable;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -549,8 +549,8 @@ public class GoalDomination extends ArenaGoal {
 
         if (PVPArena.hasAdminPerms(player)
                 || PVPArena.hasCreatePerms(player, arena)
-                && player.getEquipment().getItemInMainHand() != null
-                && player.getEquipment().getItemInMainHand().getType().name().equals(arena
+                && player.getEquipment().getItemInHand() != null
+                && player.getEquipment().getItemInHand().getType().name().equals(arena
                 .getArenaConfig().getString(CFG.GENERAL_WAND))) {
 
             final Set<PABlockLocation> flags = SpawnManager.getBlocksStartingWith(arena,
